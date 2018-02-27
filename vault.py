@@ -169,7 +169,10 @@ class LookupModule(LookupBase):
                 context.check_hostname = cahostverify
             elif skipverify:
                 context = ssl._create_unverified_context()
-            data = data.encode('utf-8') if data else None
+
+            for key, value in data.items():
+                data[key] = value.encode('utf-8')
+
             req = urllib2.Request(url, json.dumps(data))
             req.add_header('Content-Type', 'application/json')
             response = urllib2.urlopen(req, context=context) if context else urllib2.urlopen(req)
